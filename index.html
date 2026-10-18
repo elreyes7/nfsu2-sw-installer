@@ -65,6 +65,31 @@
       background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-cyan), transparent);
     }
 
+    .lang-nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .lang-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active, .lang-btn:hover {
+      border-color: var(--neon-green);
+      color: var(--neon-green);
+      background: rgba(57, 255, 20, 0.1);
+    }
+
     .game-logo {
       margin: 0.25rem auto 1rem;
       display: inline-block;
@@ -342,73 +367,79 @@
 
 <main>
   <header>
+    <nav class="lang-nav" aria-label="Language">
+      <button class="lang-btn active" onclick="setLang('es')" id="btn-es">ES</button>
+      <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+    </nav>
+
     <div class="game-logo">
       <div class="logo-nfs">Need for Speed</div>
       <div class="logo-u2">Underground 2</div>
     </div>
-    <h1><span>Nintendo Switch</span> Empaquetador Web Real (.ZIP / XISO)</h1>
-    <p>
+
+    <h1><span>Nintendo Switch</span> <span data-i18n="h1_title">Empaquetador Web Real (.ZIP / XISO)</span></h1>
+    <p data-i18n="h1_desc">
       Construye el paquete real <code>nfsu2x.zip</code> para <strong>Nintendo Switch</strong> directamente en tu navegador. Soporta lectura nativa de imágenes <strong>XISO (<code>.iso</code> / <code>.xiso</code>)</strong>, carpetas con <code>default.xbe</code> y tus binarios <code>.nro</code>.
     </p>
   </header>
 
   <section>
-    <h2>1. Elige tus archivos de origen</h2>
-    <p>
+    <h2 data-i18n="s1_title">1. Elige tus archivos de origen</h2>
+    <p data-i18n="s1_desc">
       Selecciona tu copia de Xbox de <strong>NFS: Underground 2</strong> (imagen XISO o carpeta extraída). Si tu carpeta ya incluye <code>nfsu2x.nro</code>, <code>nfsu2x-vulkan.nro</code> o tu propio <code>nfsu2x_env.txt</code>, el instalador los detectará automáticamente.
     </p>
 
     <div class="picker-grid">
       <label class="file-btn">
-        <span>💿 Imagen XISO (.iso / .xiso)</span>
-        <small>Extrae los archivos del disco Xbox en el navegador</small>
+        <span>💿 <span data-i18n="btn_iso">Imagen XISO (.iso / .xiso)</span></span>
+        <small data-i18n="sub_iso">Extrae los archivos del disco Xbox en el navegador</small>
         <input type="file" id="iso-input" accept=".iso,.xiso">
       </label>
 
       <label class="file-btn">
-        <span>📁 Carpeta del juego / Port</span>
-        <small>Carpeta con default.xbe (y opcionalmente tu .nro / env)</small>
+        <span>📁 <span data-i18n="btn_folder">Carpeta del juego / Port</span></span>
+        <small data-i18n="sub_folder">Carpeta con default.xbe (y opcionalmente tu .nro / env)</small>
         <input type="file" id="folder-input" webkitdirectory directory multiple>
       </label>
 
       <label class="file-btn">
-        <span>🧩 Binario Switch (.nro) [Opcional]</span>
-        <small>Sube nfsu2x-vulkan.nro o nfsu2x.nro si está suelto</small>
+        <span>🧩 <span data-i18n="btn_nro">Binario Switch (.nro) [Opcional]</span></span>
+        <small data-i18n="sub_nro">Sube nfsu2x-vulkan.nro o nfsu2x.nro si está suelto</small>
         <input type="file" id="nro-input" accept=".nro" multiple>
       </label>
     </div>
 
-    <div id="selection-status" class="status-box">
+    <div id="selection-status" class="status-box" data-i18n="status_wait">
       Esperando selección de carpeta o archivo XISO...
     </div>
     <div id="nro-status" class="status-box" style="display:none;"></div>
   </section>
 
   <section>
-    <h2>2. Configura nfsu2x_env.txt y genera el archivo .ZIP</h2>
-    <p>
+    <h2 data-i18n="s2_title">2. Configura nfsu2x_env.txt y genera el archivo .ZIP</h2>
+    <p data-i18n="s2_desc">
       El instalador empaquetará todo bajo la estructura oficial <code>switch/nfsu2x/</code> y <code>switch/nfsu2x/game/</code> usando flujo ZIP directo (sin límite de RAM).
     </p>
 
     <div class="config-grid">
       <div class="config-item">
-        <label for="cfg-env-mode">Archivo nfsu2x_env.txt</label>
+        <label for="cfg-env-mode" data-i18n="lbl_env">Archivo nfsu2x_env.txt</label>
         <select id="cfg-env-mode">
-          <option value="optimized">Generar optimizado para Jugar (NO_LOG=1, PROFILE=0)</option>
-          <option value="keep">Conservar mi nfsu2x_env.txt existente (si está en la carpeta)</option>
+          <option value="optimized" data-i18n="opt_env1">Generar optimizado para Jugar (NO_LOG=1, PROFILE=0)</option>
+          <option value="keep" data-i18n="opt_env2">Conservar mi nfsu2x_env.txt existente (si está en la carpeta)</option>
         </select>
       </div>
 
       <div class="config-item">
-        <label for="cfg-nro-mode">Ejecutable Principal (nfsu2x.nro)</label>
+        <label for="cfg-nro-mode" data-i18n="lbl_nro">Ejecutable Principal (nfsu2x.nro)</label>
         <select id="cfg-nro-mode">
-          <option value="vulkan_as_main">Usar Vulkan como nfsu2x.nro principal (Recomendado)</option>
-          <option value="keep_names">Mantener nombres originales (nfsu2x.nro y nfsu2x-vulkan.nro)</option>
+          <option value="vulkan_as_main" data-i18n="opt_nro1">Usar Vulkan como nfsu2x.nro principal (Recomendado)</option>
+          <option value="keep_names" data-i18n="opt_nro2">Mantener nombres originales (nfsu2x.nro y nfsu2x-vulkan.nro)</option>
         </select>
       </div>
 
       <div class="config-item">
-        <label for="cfg-scale">Escala Resolución (RECOMP_GL_SCALE)</label>
+        <label for="cfg-scale" data-i18n="lbl_scale">Escala Resolución (RECOMP_GL_SCALE)</label>
         <select id="cfg-scale">
           <option value="1.5">1.5x (720p nítido - Recomendado)</option>
           <option value="1.0">1.0x (480p nativo - Máximos FPS)</option>
@@ -417,25 +448,25 @@
       </div>
 
       <div class="config-item">
-        <label for="cfg-oc">Overclock en Switch (CPU / GPU / MEM)</label>
+        <label for="cfg-oc" data-i18n="lbl_oc">Overclock en Switch (CPU / GPU / MEM)</label>
         <select id="cfg-oc">
-          <option value="oc_high">Activado: 1785 MHz CPU / 768 MHz GPU / 1600 MEM</option>
-          <option value="stock">Velocidades Stock de Switch (Sin Overclock)</option>
+          <option value="oc_high" data-i18n="opt_oc1">Activado: 1785 MHz CPU / 768 MHz GPU / 1600 MEM</option>
+          <option value="stock" data-i18n="opt_oc2">Velocidades Stock de Switch (Sin Overclock)</option>
         </select>
       </div>
     </div>
 
     <div class="action-group">
       <div class="action-row">
-        <p><strong>Paquete Completo (<code>nfsu2x.zip</code>):</strong> Incluye la carpeta <code>game/</code>, tu <code>.nro</code> y <code>nfsu2x_env.txt</code>.</p>
-        <button id="btn-build-full" class="btn-primary" disabled onclick="startZipBuild(false)">
+        <p><strong data-i18n="lbl_full_zip">Paquete Completo (<code>nfsu2x.zip</code>):</strong> <span data-i18n="desc_full_zip">Incluye la carpeta <code>game/</code>, tu <code>.nro</code> y <code>nfsu2x_env.txt</code>.</span></p>
+        <button id="btn-build-full" class="btn-primary" disabled onclick="startZipBuild(false)" data-i18n="btn_gen_full">
           Generar nfsu2x.zip
         </button>
       </div>
 
       <div class="action-row">
-        <p><strong>Paquete Ligero / Config (<code>nfsu2x-update.zip</code>):</strong> Solo empaqueta en ZIP los <code>.nro</code> y el <code>nfsu2x_env.txt</code> optimizado.</p>
-        <button id="btn-build-update" class="btn-secondary" onclick="startZipBuild(true)">
+        <p><strong data-i18n="lbl_up_zip">Paquete Ligero / Config (<code>nfsu2x-update.zip</code>):</strong> <span data-i18n="desc_up_zip">Solo empaqueta en ZIP los <code>.nro</code> y el <code>nfsu2x_env.txt</code> optimizado.</span></p>
+        <button id="btn-build-update" class="btn-secondary" onclick="startZipBuild(true)" data-i18n="btn_gen_up">
           Generar nfsu2x-update.zip
         </button>
       </div>
@@ -446,15 +477,15 @@
   </section>
 
   <section>
-    <h2>3. Estructura que se creará en tu microSD</h2>
+    <h2>3. <span data-i18n="s3_title">Estructura que se creará en tu microSD</span></h2>
     <ol>
-      <li>
+      <li data-i18n="s3_li1">
         Extrae el archivo <code>nfsu2x.zip</code> directamente en la raíz de tu microSD (o en <code>sdmc:/switch/</code>). Quedará así:
         <br><code>sdmc:/switch/nfsu2x/nfsu2x.nro</code>
         <br><code>sdmc:/switch/nfsu2x/nfsu2x_env.txt</code>
         <br><code>sdmc:/switch/nfsu2x/game/default.xbe</code> (+ carpetas <code>CARS</code>, <code>FRONTEND</code>, <code>GLOBAL</code>, <code>MOVIES</code>, <code>SOUND</code>, <code>TRACKS</code>…)
       </li>
-      <li>
+      <li data-i18n="s3_li2">
         Inicia cualquier juego en tu Switch manteniendo presionado <strong>R</strong> (modo <em>Title Takeover</em> con toda la RAM disponible) y abre <strong>Need for Speed: Underground 2</strong>.
       </li>
     </ol>
@@ -462,19 +493,104 @@
 
   <footer>
     <div class="footer-links">
-      <a href="https://github.com/antoxa2584x/nfsu2-sw" rel="noopener" target="_blank">Repositorio nfsu2-sw</a>
-      <a href="https://github.com/antoxa2584x/nfsu2-sw/releases" rel="noopener" target="_blank">Descargar .NRO (Releases)</a>
+      <a href="https://github.com/antoxa2584x/nfsu2-sw" rel="noopener" target="_blank" data-i18n="lnk_repo">Repositorio nfsu2-sw</a>
+      <a href="https://github.com/antoxa2584x/nfsu2-sw/releases" rel="noopener" target="_blank" data-i18n="lnk_rel">Descargar .NRO (Releases)</a>
     </div>
-    <p class="disclaimer">
+    <p class="disclaimer" data-i18n="footer_disc">
       Todo el empaquetado ZIP y la extracción XISO se ejecutan localmente en tu navegador mediante JavaScript (ZIP64 Streaming + Lector XISO de Xbox). Ningún archivo se sube a Internet.
     </p>
   </footer>
 </main>
 
 <script>
-// ============================================================================
-// 1. CODIFICADOR ZIP64 EN STREAMING (STORE - NIVEL 0 PARA VELOCIDAD EN GBs)
-// ============================================================================
+const dict = {
+  es: {
+    h1_title: "Empaquetador Web Real (.ZIP / XISO)",
+    h1_desc: "Construye el paquete real <code>nfsu2x.zip</code> para <strong>Nintendo Switch</strong> directamente en tu navegador. Soporta lectura nativa de imágenes <strong>XISO (<code>.iso</code> / <code>.xiso</code>)</strong>, carpetas con <code>default.xbe</code> y tus binarios <code>.nro</code>.",
+    s1_title: "1. Elige tus archivos de origen",
+    s1_desc: "Selecciona tu copia de Xbox de <strong>NFS: Underground 2</strong> (imagen XISO o carpeta extraída). Si tu carpeta ya incluye <code>nfsu2x.nro</code>, <code>nfsu2x-vulkan.nro</code> o tu propio <code>nfsu2x_env.txt</code>, el instalador los detectará automáticamente.",
+    btn_iso: "Imagen XISO (.iso / .xiso)",
+    sub_iso: "Extrae los archivos del disco Xbox en el navegador",
+    btn_folder: "Carpeta del juego / Port",
+    sub_folder: "Carpeta con default.xbe (y opcionalmente tu .nro / env)",
+    btn_nro: "Binario Switch (.nro) [Opcional]",
+    sub_nro: "Sube nfsu2x-vulkan.nro o nfsu2x.nro si está suelto",
+    status_wait: "Esperando selección de carpeta o archivo XISO...",
+    s2_title: "2. Configura nfsu2x_env.txt y genera el archivo .ZIP",
+    s2_desc: "El instalador empaquetará todo bajo la estructura oficial <code>switch/nfsu2x/</code> y <code>switch/nfsu2x/game/</code> usando flujo ZIP directo (sin límite de RAM).",
+    lbl_env: "Archivo nfsu2x_env.txt",
+    opt_env1: "Generar optimizado para Jugar (NO_LOG=1, PROFILE=0)",
+    opt_env2: "Conservar mi nfsu2x_env.txt existente (si está en la carpeta)",
+    lbl_nro: "Ejecutable Principal (nfsu2x.nro)",
+    opt_nro1: "Usar Vulkan como nfsu2x.nro principal (Recomendado)",
+    opt_nro2: "Mantener nombres originales (nfsu2x.nro y nfsu2x-vulkan.nro)",
+    lbl_scale: "Escala Resolución (RECOMP_GL_SCALE)",
+    lbl_oc: "Overclock en Switch (CPU / GPU / MEM)",
+    opt_oc1: "Activado: 1785 MHz CPU / 768 MHz GPU / 1600 MEM",
+    opt_oc2: "Velocidades Stock de Switch (Sin Overclock)",
+    lbl_full_zip: "Paquete Completo (<code>nfsu2x.zip</code>):",
+    desc_full_zip: "Incluye la carpeta <code>game/</code>, tu <code>.nro</code> y <code>nfsu2x_env.txt</code>.",
+    btn_gen_full: "Generar nfsu2x.zip",
+    lbl_up_zip: "Paquete Ligero / Config (<code>nfsu2x-update.zip</code>):",
+    desc_up_zip: "Solo empaqueta en ZIP los <code>.nro</code> y el <code>nfsu2x_env.txt</code> optimizado.",
+    btn_gen_up: "Generar nfsu2x-update.zip",
+    s3_title: "Estructura que se creará en tu microSD",
+    s3_li1: "Extrae el archivo <code>nfsu2x.zip</code> directamente en la raíz de tu microSD (o en <code>sdmc:/switch/</code>). Quedará así:<br><code>sdmc:/switch/nfsu2x/nfsu2x.nro</code><br><code>sdmc:/switch/nfsu2x/nfsu2x_env.txt</code><br><code>sdmc:/switch/nfsu2x/game/default.xbe</code> (+ carpetas <code>CARS</code>, <code>FRONTEND</code>, <code>GLOBAL</code>, <code>MOVIES</code>, <code>SOUND</code>, <code>TRACKS</code>…)",
+    s3_li2: "Inicia cualquier juego en tu Switch manteniendo presionado <strong>R</strong> (modo <em>Title Takeover</em> con toda la RAM disponible) y abre <strong>Need for Speed: Underground 2</strong>.",
+    lnk_repo: "Repositorio nfsu2-sw",
+    lnk_rel: "Descargar .NRO (Releases)",
+    footer_disc: "Todo el empaquetado ZIP y la extracción XISO se ejecutan localmente en tu navegador mediante JavaScript (ZIP64 Streaming + Lector XISO de Xbox). Ningún archivo se sube a Internet."
+  },
+  en: {
+    h1_title: "Real Web Packager (.ZIP / XISO)",
+    h1_desc: "Builds the real <code>nfsu2x.zip</code> package for <strong>Nintendo Switch</strong> directly in your browser. Supports native <strong>XISO (<code>.iso</code> / <code>.xiso</code>)</strong> images, folders with <code>default.xbe</code>, and <code>.nro</code> binaries.",
+    s1_title: "1. Choose your game source",
+    s1_desc: "Select your Xbox copy of <strong>NFS: Underground 2</strong> (XISO image or extracted folder). If your folder already includes <code>nfsu2x.nro</code>, <code>nfsu2x-vulkan.nro</code>, or your own <code>nfsu2x_env.txt</code>, the installer will detect them automatically.",
+    btn_iso: "XISO Disc Image (.iso / .xiso)",
+    sub_iso: "Extracts Xbox disc files right inside your browser",
+    btn_folder: "Game Folder / Port",
+    sub_folder: "Folder containing default.xbe (and optional .nro / env)",
+    btn_nro: "Switch Binary (.nro) [Optional]",
+    sub_nro: "Upload nfsu2x-vulkan.nro or nfsu2x.nro if loose",
+    status_wait: "Waiting for folder or XISO image selection...",
+    s2_title: "2. Configure nfsu2x_env.txt & Create .ZIP",
+    s2_desc: "The installer packages everything under the official <code>switch/nfsu2x/</code> and <code>switch/nfsu2x/game/</code> structure using direct ZIP streaming (no RAM limit).",
+    lbl_env: "nfsu2x_env.txt File",
+    opt_env1: "Generate optimized for Gaming (NO_LOG=1, PROFILE=0)",
+    opt_env2: "Keep my existing nfsu2x_env.txt (if found in folder)",
+    lbl_nro: "Main Executable (nfsu2x.nro)",
+    opt_nro1: "Use Vulkan as main nfsu2x.nro (Recommended)",
+    opt_nro2: "Keep original filenames (nfsu2x.nro & nfsu2x-vulkan.nro)",
+    lbl_scale: "Resolution Scale (RECOMP_GL_SCALE)",
+    lbl_oc: "Switch Overclock (CPU / GPU / MEM)",
+    opt_oc1: "Enabled: 1785 MHz CPU / 768 MHz GPU / 1600 MEM",
+    opt_oc2: "Switch Stock Speeds (No Overclock)",
+    lbl_full_zip: "Full Package (<code>nfsu2x.zip</code>):",
+    desc_full_zip: "Includes <code>game/</code> folder, your <code>.nro</code>, and <code>nfsu2x_env.txt</code>.",
+    btn_gen_full: "Generate nfsu2x.zip",
+    lbl_up_zip: "Light / Update Package (<code>nfsu2x-update.zip</code>):",
+    desc_up_zip: "Packages only <code>.nro</code> binaries and optimized <code>nfsu2x_env.txt</code>.",
+    btn_gen_up: "Generate nfsu2x-update.zip",
+    s3_title: "Structure to create on your microSD",
+    s3_li1: "Extract the downloaded <code>nfsu2x.zip</code> directly to your microSD root (or <code>sdmc:/switch/</code>). It will look like this:<br><code>sdmc:/switch/nfsu2x/nfsu2x.nro</code><br><code>sdmc:/switch/nfsu2x/nfsu2x_env.txt</code><br><code>sdmc:/switch/nfsu2x/game/default.xbe</code> (+ folders <code>CARS</code>, <code>FRONTEND</code>, <code>GLOBAL</code>, <code>MOVIES</code>, <code>SOUND</code>, <code>TRACKS</code>…)",
+    s3_li2: "Hold down <strong>R</strong> while starting any installed game (<em>Title Takeover</em> mode with full RAM) and launch <strong>Need for Speed: Underground 2</strong>.",
+    lnk_repo: "nfsu2-sw Repository",
+    lnk_rel: "Download .NRO (Releases)",
+    footer_disc: "All ZIP packaging and XISO extraction run locally in your browser via JavaScript (ZIP64 Streaming + Xbox XISO Reader). No files are ever uploaded to the internet."
+  }
+};
+
+function setLang(lang) {
+  document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[lang][key]) {
+      el.innerHTML = dict[lang][key];
+    }
+  });
+}
+
 const CRC_TABLE = (() => {
   const t = new Uint32Array(256);
   for (let i = 0; i < 256; i++) {
@@ -512,7 +628,6 @@ class StreamingZipBuilder {
     const fileSize = BigInt(blob.size);
     const localHeaderOffset = this.offset;
 
-    // Calculamos CRC32 leyendo por fragmentos para no saturar RAM
     let crc = 0;
     const reader = blob.stream().getReader();
     let readBytes = 0;
@@ -524,53 +639,50 @@ class StreamingZipBuilder {
       if (onChunkProgress) onChunkProgress(readBytes, blob.size);
     }
 
-    // Local File Header (con extensión ZIP64 por si el archivo o el offset supera 4 GB)
     const lfh = new ArrayBuffer(30 + nameBytes.length + 20);
     const lfhView = new DataView(lfh);
-    lfhView.setUint32(0, 0x04034b50, true); // LFH Signature
-    lfhView.setUint16(4, 45, true);         // Version needed (4.5 for ZIP64)
-    lfhView.setUint16(6, 0x0800, true);     // UTF-8 flag
-    lfhView.setUint16(8, 0, true);          // Method: 0 (STORE)
-    lfhView.setUint16(10, 0, true);         // Mod time
-    lfhView.setUint16(12, 0x5421, true);    // Mod date
-    lfhView.setUint32(14, crc, true);       // CRC32
-    lfhView.setUint32(18, 0xFFFFFFFF, true);// Compressed size (ZIP64)
-    lfhView.setUint32(22, 0xFFFFFFFF, true);// Uncompressed size (ZIP64)
+    lfhView.setUint32(0, 0x04034b50, true);
+    lfhView.setUint16(4, 45, true);
+    lfhView.setUint16(6, 0x0800, true);
+    lfhView.setUint16(8, 0, true);
+    lfhView.setUint16(10, 0, true);
+    lfhView.setUint16(12, 0x5421, true);
+    lfhView.setUint32(14, crc, true);
+    lfhView.setUint32(18, 0xFFFFFFFF, true);
+    lfhView.setUint32(22, 0xFFFFFFFF, true);
     lfhView.setUint16(26, nameBytes.length, true);
-    lfhView.setUint16(28, 20, true);        // Extra field length (ZIP64 = 20 bytes)
+    lfhView.setUint16(28, 20, true);
     new Uint8Array(lfh, 30, nameBytes.length).set(nameBytes);
 
     const extraOffset = 30 + nameBytes.length;
-    lfhView.setUint16(extraOffset, 0x0001, true); // ZIP64 Extra Tag
-    lfhView.setUint16(extraOffset + 2, 16, true); // Size of extra data
+    lfhView.setUint16(extraOffset, 0x0001, true);
+    lfhView.setUint16(extraOffset + 2, 16, true);
     lfhView.setBigUint64(extraOffset + 4, fileSize, true);
     lfhView.setBigUint64(extraOffset + 12, fileSize, true);
 
     this._writeBytes(new Uint8Array(lfh));
-    // Guardamos referencia directa al File/Blob sin copiarlo en memoria
     this.parts.push(blob);
     this.offset += fileSize;
 
-    // Central Directory File Header
     const cdfh = new ArrayBuffer(46 + nameBytes.length + 28);
     const cdView = new DataView(cdfh);
-    cdView.setUint32(0, 0x02014b50, true);  // CDFH Signature
-    cdView.setUint16(4, 45, true);          // Version made by
-    cdView.setUint16(6, 45, true);          // Version needed
-    cdView.setUint16(8, 0x0800, true);      // UTF-8 flag
-    cdView.setUint16(10, 0, true);          // Method: STORE
+    cdView.setUint32(0, 0x02014b50, true);
+    cdView.setUint16(4, 45, true);
+    cdView.setUint16(6, 45, true);
+    cdView.setUint16(8, 0x0800, true);
+    cdView.setUint16(10, 0, true);
     cdView.setUint16(12, 0, true);
     cdView.setUint16(14, 0x5421, true);
     cdView.setUint32(16, crc, true);
     cdView.setUint32(20, 0xFFFFFFFF, true);
     cdView.setUint32(24, 0xFFFFFFFF, true);
     cdView.setUint16(28, nameBytes.length, true);
-    cdView.setUint16(30, 28, true);         // Extra length (28 bytes for size+comp+offset)
+    cdView.setUint16(30, 28, true);
     cdView.setUint16(32, 0, true);
     cdView.setUint16(34, 0, true);
     cdView.setUint16(36, 0, true);
     cdView.setUint32(38, 0, true);
-    cdView.setUint32(42, 0xFFFFFFFF, true); // Offset in ZIP64 extra
+    cdView.setUint32(42, 0xFFFFFFFF, true);
     new Uint8Array(cdfh, 46, nameBytes.length).set(nameBytes);
 
     const cdExtra = 46 + nameBytes.length;
@@ -594,7 +706,6 @@ class StreamingZipBuilder {
 
     const zip64EocdOffset = this.offset;
 
-    // ZIP64 End of Central Directory Record (56 bytes)
     const eocd64 = new ArrayBuffer(56);
     const v64 = new DataView(eocd64);
     v64.setUint32(0, 0x06064b50, true);
@@ -609,7 +720,6 @@ class StreamingZipBuilder {
     v64.setBigUint64(48, cdStartOffset, true);
     this._writeBytes(new Uint8Array(eocd64));
 
-    // ZIP64 End of Central Directory Locator (20 bytes)
     const loc64 = new ArrayBuffer(20);
     const vLoc = new DataView(loc64);
     vLoc.setUint32(0, 0x07064b50, true);
@@ -618,7 +728,6 @@ class StreamingZipBuilder {
     vLoc.setUint32(16, 1, true);
     this._writeBytes(new Uint8Array(loc64));
 
-    // Standard End of Central Directory Record (22 bytes)
     const eocd = new ArrayBuffer(22);
     const vEocd = new DataView(eocd);
     vEocd.setUint32(0, 0x06054b50, true);
@@ -635,11 +744,8 @@ class StreamingZipBuilder {
   }
 }
 
-// ============================================================================
-// 2. LECTOR DE IMÁGENES XBOX XISO (.ISO / .XISO) EN EL NAVEGADOR
-// ============================================================================
 const XISO_MAGIC = "MICROSOFT*XBOX*MEDIA";
-const XISO_OFFSETS = [0x0, 0xFD90000, 0x18300000]; // XISO limpio, XGD1, XGD2
+const XISO_OFFSETS = [0x0, 0xFD90000, 0x18300000];
 
 async function parseXboxIso(isoFile) {
   let baseOffset = -1;
@@ -673,7 +779,7 @@ async function parseXboxIso(isoFile) {
     const dv = new DataView(buf);
     const u8 = new Uint8Array(buf);
 
-    const stack = [0]; // offsets en bytes dentro del árbol binario AVL del directorio
+    const stack = [0];
     const visited = new Set();
 
     while (stack.length > 0) {
@@ -711,11 +817,8 @@ async function parseXboxIso(isoFile) {
   return entries;
 }
 
-// ============================================================================
-// 3. LÓGICA DE INTERFAZ Y EMPAQUETADO DE NFS: UNDERGROUND 2
-// ============================================================================
-let gameFilesList = []; // [{ path: 'default.xbe', blob: File/Blob }]
-let detectedNroFiles = {}; // { 'nfsu2x.nro': File, 'nfsu2x-vulkan.nro': File }
+let gameFilesList = [];
+let detectedNroFiles = {};
 let detectedUserEnvBlob = null;
 
 const statusBox = document.getElementById('selection-status');
@@ -727,41 +830,46 @@ function updateNroStatus() {
   if (keys.length > 0) {
     nroStatusBox.style.display = 'block';
     nroStatusBox.className = 'status-box ok';
-    nroStatusBox.textContent = `✔ Binarios Switch (.nro) listos para incluir: ${keys.join(', ')}`;
+    nroStatusBox.textContent = currentLang === 'es' 
+      ? `✔ Binarios Switch (.nro) listos para incluir: ${keys.join(', ')}`
+      : `✔ Switch binaries (.nro) ready to bundle: ${keys.join(', ')}`;
   } else {
     nroStatusBox.style.display = 'block';
     nroStatusBox.className = 'status-box warn';
-    nroStatusBox.textContent = `ℹ No se seleccionó ningún archivo .nro aún (puedes subir nfsu2x-vulkan.nro en el botón 3, o el ZIP se creará con la carpeta game/ + nfsu2x_env.txt).`;
+    nroStatusBox.textContent = currentLang === 'es'
+      ? `ℹ No se seleccionó ningún archivo .nro aún (puedes subir nfsu2x-vulkan.nro en el botón 3, o el ZIP se creará con la carpeta game/ + nfsu2x_env.txt).`
+      : `ℹ No .nro file selected yet (you can upload nfsu2x-vulkan.nro in button 3, or the ZIP will be created with game/ + nfsu2x_env.txt).`;
   }
 }
 
-// Selector de Imagen XISO
+let currentLang = 'es';
+
 document.getElementById('iso-input').addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
   statusBox.className = 'status-box warn';
-  statusBox.textContent = `⏳ Analizando sistema de archivos Xbox XISO en ${file.name}...`;
+  statusBox.textContent = currentLang === 'es' ? `⏳ Analizando sistema de archivos Xbox XISO en ${file.name}...` : `⏳ Analyzing Xbox XISO filesystem in ${file.name}...`;
   try {
     const entries = await parseXboxIso(file);
     const hasXbe = entries.some(x => x.path.toLowerCase() === 'default.xbe');
     gameFilesList = entries;
     statusBox.className = hasXbe ? 'status-box ok' : 'status-box warn';
-    statusBox.textContent = `✔ XISO leído correctamente: ${entries.length} archivos encontrados dentro de ${file.name} ${hasXbe ? '(default.xbe verificado)' : ''}.`;
+    statusBox.textContent = currentLang === 'es'
+      ? `✔ XISO leído correctamente: ${entries.length} archivos encontrados dentro de ${file.name} ${hasXbe ? '(default.xbe verificado)' : ''}.`
+      : `✔ XISO parsed successfully: ${entries.length} files found inside ${file.name} ${hasXbe ? '(default.xbe verified)' : ''}.`;
     btnBuildFull.disabled = false;
     updateNroStatus();
   } catch (err) {
     statusBox.className = 'status-box err';
-    statusBox.textContent = `✖ Error al leer XISO: ${err.message}`;
+    statusBox.textContent = currentLang === 'es' ? `✖ Error al leer XISO: ${err.message}` : `✖ Error reading XISO: ${err.message}`;
     btnBuildFull.disabled = true;
   }
 });
 
-// Selector de Carpeta
 document.getElementById('folder-input').addEventListener('change', (e) => {
   const files = Array.from(e.target.files);
   if (!files.length) return;
 
-  // Buscamos dónde está default.xbe para recortar la ruta relativa a partir de ahí
   let xbeRelPath = null;
   for (const f of files) {
     const rel = f.webkitRelativePath || f.name;
@@ -783,22 +891,21 @@ document.getElementById('folder-input').addEventListener('change', (e) => {
     const rel = f.webkitRelativePath || f.name;
     const lowerName = f.name.toLowerCase();
 
-    // Si el usuario tiene nfsu2x.nro o nfsu2x-vulkan.nro dentro de la carpeta seleccionada, los capturamos
     if (lowerName.endsWith('.nro')) {
       detectedNroFiles[f.name] = f;
       continue;
     }
-    // Si ya tenía su propio nfsu2x_env.txt en la carpeta, lo guardamos por si elige conservarlo
+
     if (lowerName === 'nfsu2x_env.txt') {
       detectedUserEnvBlob = f;
       continue;
     }
     if (lowerName === 'prof.bin' || lowerName === 'progcache.bin' || lowerName.endsWith('.log')) {
-      continue; // Omitimos archivos temporales de depuración
+      continue;
     }
 
     let cleanPath = rel.startsWith(gamePrefix) ? rel.slice(gamePrefix.length) : rel;
-    // Si seleccionó la carpeta padre nfsu2x que tiene subcarpeta game/, limpiamos el prefijo game/
+
     if (cleanPath.toLowerCase().startsWith('game/')) {
       cleanPath = cleanPath.slice(5);
     }
@@ -807,17 +914,20 @@ document.getElementById('folder-input').addEventListener('change', (e) => {
 
   if (xbeRelPath) {
     statusBox.className = 'status-box ok';
-    statusBox.textContent = `✔ Carpeta válida: default.xbe detectado (${gameFilesList.length} archivos del juego listos para empaquetar en ZIP).`;
+    statusBox.textContent = currentLang === 'es'
+      ? `✔ Carpeta válida: default.xbe detectado (${gameFilesList.length} archivos del juego listos para empaquetar en ZIP).`
+      : `✔ Valid folder: default.xbe detected (${gameFilesList.length} game files ready to pack into ZIP).`;
     btnBuildFull.disabled = false;
   } else {
     statusBox.className = 'status-box warn';
-    statusBox.textContent = `⚠ No se vio "default.xbe", pero se cargaron ${gameFilesList.length} archivos. Puedes continuar si tu carpeta es correcta.`;
+    statusBox.textContent = currentLang === 'es'
+      ? `⚠ No se vio "default.xbe", pero se cargaron ${gameFilesList.length} archivos. Puedes continuar si tu carpeta es correcta.`
+      : `⚠ No "default.xbe" found, but ${gameFilesList.length} files were loaded. You can proceed if your folder is correct.`;
     btnBuildFull.disabled = gameFilesList.length === 0;
   }
   updateNroStatus();
 });
 
-// Selector de NRO suelto
 document.getElementById('nro-input').addEventListener('change', (e) => {
   const files = Array.from(e.target.files);
   for (const f of files) {
@@ -878,8 +988,7 @@ async function startZipBuild(updateOnly) {
     const envMode = document.getElementById('cfg-env-mode').value;
     const nroMode = document.getElementById('cfg-nro-mode').value;
 
-    // 1. Añadir nfsu2x_env.txt
-    log.textContent = `[1/3] Añadiendo switch/nfsu2x/nfsu2x_env.txt al paquete ZIP...`;
+    log.textContent = currentLang === 'es' ? `[1/3] Añadiendo switch/nfsu2x/nfsu2x_env.txt al paquete ZIP...` : `[1/3] Adding switch/nfsu2x/nfsu2x_env.txt to ZIP package...`;
     let envBlob;
     if (envMode === 'keep' && detectedUserEnvBlob) {
       envBlob = detectedUserEnvBlob;
@@ -888,22 +997,20 @@ async function startZipBuild(updateOnly) {
     }
     await zip.addFileFromBlob('switch/nfsu2x/nfsu2x_env.txt', envBlob);
 
-    // 2. Añadir binarios .nro si están disponibles
     const nroNames = Object.keys(detectedNroFiles);
     if (nroNames.length > 0) {
       const vulkanKey = nroNames.find(k => k.toLowerCase().includes('vulkan'));
       if (nroMode === 'vulkan_as_main' && vulkanKey) {
-        log.textContent = `[2/3] Empaquetando ${vulkanKey} como switch/nfsu2x/nfsu2x.nro principal...`;
+        log.textContent = currentLang === 'es' ? `[2/3] Empaquetando ${vulkanKey} como switch/nfsu2x/nfsu2x.nro principal...` : `[2/3] Packaging ${vulkanKey} as main switch/nfsu2x/nfsu2x.nro...`;
         await zip.addFileFromBlob('switch/nfsu2x/nfsu2x.nro', detectedNroFiles[vulkanKey]);
       } else {
         for (const k of nroNames) {
-          log.textContent = `[2/3] Empaquetando binario switch/nfsu2x/${k}...`;
+          log.textContent = currentLang === 'es' ? `[2/3] Empaquetando binario switch/nfsu2x/${k}...` : `[2/3] Packaging binary switch/nfsu2x/${k}...`;
           await zip.addFileFromBlob(`switch/nfsu2x/${k}`, detectedNroFiles[k]);
         }
       }
     }
 
-    // 3. Añadir todos los archivos del juego si es instalación completa
     if (!updateOnly) {
       const totalFiles = gameFilesList.length;
       for (let i = 0; i < totalFiles; i++) {
@@ -911,9 +1018,12 @@ async function startZipBuild(updateOnly) {
         const targetZipPath = `switch/nfsu2x/game/${item.path}`;
         const pct = Math.round(((i + 1) / totalFiles) * 95);
         progress.value = pct;
-        log.textContent = `[3/3] Empaquetando en ZIP (${i + 1}/${totalFiles} — ${pct}%):\n${targetZipPath}`;
+        log.textContent = currentLang === 'es'
+          ? `[3/3] Empaquetando en ZIP (${i + 1}/${totalFiles} — ${pct}%):
+${targetZipPath}`
+          : `[3/3] Packaging into ZIP (${i + 1}/${totalFiles} — ${pct}%):
+${targetZipPath}`;
 
-        // Dejar respirar el hilo de UI cada 15 archivos pequeños o en archivos grandes
         if (i % 15 === 0 || item.size > 15 * 1024 * 1024) {
           await new Promise(r => setTimeout(r, 0));
         }
@@ -923,7 +1033,7 @@ async function startZipBuild(updateOnly) {
     }
 
     progress.value = 98;
-    log.textContent = `Cerrando directorio central ZIP64 y preparando descarga...`;
+    log.textContent = currentLang === 'es' ? `Cerrando directorio central ZIP64 y preparando descarga...` : `Closing ZIP64 central directory and preparing download...`;
     await new Promise(r => setTimeout(r, 50));
 
     const finalZipBlob = zip.finalize();
@@ -940,11 +1050,29 @@ async function startZipBuild(updateOnly) {
     setTimeout(() => URL.revokeObjectURL(url), 60000);
 
     const sizeMB = (finalZipBlob.size / (1024 * 1024)).toFixed(1);
-    log.textContent = `✔ ¡Paquete ${outName} (${sizeMB} MB) generado y descargado con éxito! Extrae su contenido en la raíz de tu microSD.`;
+    log.textContent = currentLang === 'es'
+      ? `✔ ¡Paquete ${outName} (${sizeMB} MB) generado y descargado con éxito! Extrae su contenido en la raíz de tu microSD.`
+      : `✔ Package ${outName} (${sizeMB} MB) successfully generated and downloaded! Extract its content to your microSD root.`;
   } catch (err) {
-    log.textContent = `✖ Error creando el ZIP: ${err.message}`;
+    log.textContent = currentLang === 'es' ? `✖ Error creando el ZIP: ${err.message}` : `✖ Error creating ZIP: ${err.message}`;
   }
 }
+</script>
+
+<script>
+window.addEventListener('DOMContentLoaded', async () => {
+  setLang('es');
+  for (const nroName of ['nfsu2x-vulkan.nro', 'nfsu2x.nro']) {
+    try {
+      const res = await fetch(`./${nroName}`);
+      if (res.ok) {
+        const blob = await res.blob();
+        detectedNroFiles[nroName] = new File([blob], nroName);
+        updateNroStatus();
+      }
+    } catch (_) {}
+  }
+});
 </script>
 
 </body>
