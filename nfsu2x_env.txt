@@ -1,0 +1,26 @@
+# nfsu2x_env.txt -- Configuración optimizada para jugar en Nintendo Switch
+# (Sin perfilador de 1 kHz ni escritura de logs en la microSD para evitar tirones)
+
+# Paralelismo de CPU y GPU en Switch:
+RECOMP_FRAME_LAG=1
+RECOMP_GL_THREAD=1
+RECOMP_GIL_EAGER=1
+
+# Desactivar muestreo de depuración (prof.bin) y logs en SD:
+NFSU2_NO_LOG=1
+RECOMP_NX_PROFILE=0
+
+# Video, Pantalla Ancha y Decodificador VP6 nativo:
+RECOMP_GL_SCALE=1.5
+RECOMP_WIDESCREEN=1
+NFSU2_SWITCH_TEXT=1
+NFSU2_NATIVE_VP6=1
+RECOMP_NX_GUEST_RT=0
+
+# Audio:
+RECOMP_AUDIO_VOLUME=100
+
+# Frecuencias de reloj en Switch (Overclock para máxima fluidez):
+NFSU2_CPU_MHZ=1785
+NFSU2_GPU_MHZ=768
+NFSU2_MEM_MHZ=1600
